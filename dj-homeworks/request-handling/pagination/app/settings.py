@@ -80,9 +80,6 @@ STATICFILES_DIRS = [
 
 BUS_STATION_CSV = os.path.join(BASE_DIR, 'data-398-2018-08-30.csv')
 
-SECRET_KEY = 'put your secret here'
-DEBUG = True
-
 try:
     from .settings_local import *
 except ImportError:
