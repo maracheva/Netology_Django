@@ -1,2 +1,2 @@
 ## Netology_Django
-# Курс по Django
+### Курс по Django
