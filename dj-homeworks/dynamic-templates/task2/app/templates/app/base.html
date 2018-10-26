@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{% block title %}Заголовок{% endblock%}</title>
+	<!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+    <body>
+
+    {% load app_tags%}
+
+        {% block navbar %}
+
+            <nav class="row">
+                <div class="nav-wrapper col s12">
+                    <a href="{% url 'home' %}" class="brand-logo">Компьютеры</a>
+                    <ul class="right hide-on-med-and-down">
+                        {% url 'examples' as examples_url %}
+                        <li class="{% show_active request examples_url %}">
+                        <!--<li {% if request.path == examples_url %} class="active" {% endif %}> ИЛИ ТАК -->
+                           <a href="{{ examples_url }} ">Примеры</a>
+                        </li>
+                        {% url 'contacts' as contacts_url %}
+                        <li class="{% show_active request contacts_url %}">
+                        <!--<li {% if request.path == contacts_url %} class="active" {% endif %}>-->
+                            <a href="{{ contacts_url }}">Контакты</a>
+                        </li>
+                        {% url 'about' as about_url%}
+                        <li class="{% show_active request about_url %}">
+                        <!--<li {% if request.path == about_url %} class="active" {% endif %}>-->
+                            <a href="{{ about_url }}">О проекте </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </nav>
+
+        {% endblock %}
+
+        {% block content %}{% endblock%}
+
+    </body>
+</html>
