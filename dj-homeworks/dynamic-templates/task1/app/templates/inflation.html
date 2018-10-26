@@ -1,3 +1,6 @@
+<!-- загрузка самописных фильтров-->
+{% load our_filter %}
+
 <!DOCTYPE html>{% load static %}
 <html>
   <head>
@@ -17,7 +20,34 @@
       <div class="row">
         <h1 class="col s12">Инфляция в России</h1>
         <ul class="col s12 m8">
-        
+
+            <table>
+            {% for row in data %}
+                <!-- если это первый ряд -->
+                {% if forloop.first %}
+                    <tr>
+                          {% for cell in row %}
+                              <!-- если это последняя ячейка -->
+                              {% if cell.last %}
+                                  <!-- получим цвет для последней ячейки = последний элемент в списке -->
+                                  <th bgcolor={{ cell|give_color_cell:last}}>{{ cell }}</th>
+                              <!-- для остальных ячеек -->
+                              {% else %}
+                                  <th> {{ cell }} </th>
+                              {% endif %}
+                          {% endfor %}
+                    </tr>
+                 <!-- для остальных рядов -->
+                {% else %}
+                    <tr>
+                        {% for cell in row %}
+                            <td bgcolor={{cell|give_color_cell:forloop.counter0}}> {{ cell }} </td>
+                        {% endfor %}
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </table>
+
         <!-- Ваша логика -->
 
         </ul>
