@@ -15,7 +15,7 @@ class Teacher(models.Model):
 
 class Student(models.Model):
     name = models.CharField(max_length=30, verbose_name='Имя')
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    teacher = models.ManyToManyField(Teacher, related_name='students', verbose_name='Учителя')
     group = models.CharField(max_length=10, verbose_name='Класс')
 
     class Meta:
@@ -24,3 +24,10 @@ class Student(models.Model):
 
     def __str__(self):
         return self.name
+
+    # добавим вывод списка учителей из свзанной модели
+    def show_teachers(self):
+
+        return ', '.join([teacher.name for teacher in self.teacher.all()[:3]])
+
+    show_teachers.short_description = 'Учителя'

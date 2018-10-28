@@ -10,6 +10,12 @@ class ArticleListView(ListView):
 
 
     def get_queryset(self):
+
+        articles_2 = self.model.objects.only('author', 'genre').select_related('author', 'genre').defer('author__phone')
+        # print('база 2', articles_2.query)
+
+        return articles_2
+
         # выведем список всех полей
         # articles_0 = self.model.objects.all() # 1,10 ms (1 запрос )
         # print('база 0', articles_0.query)
@@ -40,8 +46,7 @@ class ArticleListView(ListView):
         # INNER JOIN "articles_author" ON ("articles_article"."author_id" = "articles_author"."id")
         # INNER JOIN "articles_genre" ON ("articles_article"."genre_id" = "articles_genre"."id")
 
-        articles_2 = self.model.objects.only('author', 'genre').select_related('author', 'genre').defer('author__phone')
-        print('база 2', articles_2.query)
+
         # база 2 выберем только поля 'author', 'genre', из select_related - даные из связанных моделей по полям
         # SELECT "articles_article"."id",
         #       "articles_article"."author_id",
@@ -55,4 +60,4 @@ class ArticleListView(ListView):
         # INNER JOIN "articles_author" ON ("articles_article"."author_id" = "articles_author"."id")
         # INNER JOIN "articles_genre" ON ("articles_article"."genre_id" = "articles_genre"."id")
 
-        return articles_2
+
