@@ -6,7 +6,7 @@ class Scope(models.Model):
     class Meta:
         verbose_name = 'Раздел'
         verbose_name_plural = 'Разделы'
-        ordering = ['topic']  # сортируем в алфавитном порядке
+
 
     def str(self):
         return self.topic
@@ -27,10 +27,17 @@ class Article(models.Model):
     class Meta:
         verbose_name = 'Статья'
         verbose_name_plural = 'Статьи'
-        ordering = ['title']  # сортируем в алфавитном порядке
+
 
     def __str__(self):
         return self.title
+
+    # выведем список тегов в list_display admin.py
+    def show_tags(self):
+
+        return ', '.join([tag.topic for tag in self.scopes.all()[:3]])
+
+    show_tags.short_description = 'Тематики статьи'
 
 
 class ArticleScopeShip(models.Model):
@@ -41,4 +48,3 @@ class ArticleScopeShip(models.Model):
     class Meta:
         verbose_name = 'Тематика статьи'
         verbose_name_plural = 'Тематика статьи'
-        ordering = ['scope'] # сортируем в алфавитном порядке

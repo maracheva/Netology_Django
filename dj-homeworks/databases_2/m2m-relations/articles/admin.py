@@ -27,18 +27,20 @@ class ArticleScopeShipInline(admin.TabularInline):
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     # list_display для контроля, какие поля отображаются на странице списка изменений администратора.
-    list_display = ('title', 'published_at')
+    list_display = ('title', 'published_at', 'show_tags')
+    list_filter = ['scopes'] # фильтр в админке по разделам
+
+    ordering = ['title', 'published_at']  # сортируем в алфавитном порядке
 
     inlines = [ArticleScopeShipInline]
 
-    # # настроить заголовок столбца
-    # def published_tag(self):
-    #     return ', '.join([tag.topic for tag in self.scopes.all()[:3]])
-    #
-    # published_tag.short_description = 'Темы'
+    pass
+
 
 
 @admin.register(Scope)
 class ScopeAdmin(admin.ModelAdmin):
+    ordering = ['topic']  # сортируем в алфавитном порядке
+
     pass
 
