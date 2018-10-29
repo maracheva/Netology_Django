@@ -1,18 +1,22 @@
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
+from django.shortcuts import HttpResponseRedirect
+
 
 from .models import Product, Review
 from .forms import ReviewForm
 
-
+# список товаров
 class ProductsList(ListView):
     model = Product
     context_object_name = 'product_list'
 
 
+# карточка товара
 class ProductView(DetailView):
     model = Product
+    template_name = 'app/product_detail.html' # добавили html шаблон
 
     def get_success_url(self):
         product_id = self.request.session.get('current_product')
@@ -24,23 +28,33 @@ class ProductView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         current_product = self.get_object()
-        self.request.session['current_product'] = current_product.id
         context['reviews'] = Review.objects.filter(product=current_product)
         context['form'] = ReviewForm
 
-        reviewed_products = self.request.session.get('reviewed_products', [])
-        context['is_review_exist'] = bool(current_product.id in reviewed_products)
+        #  проверка на наличие комментария:
+        # если has_commented variable = False, то можно добавить комментарий, после чего has_commented станет True
+        if self.request.session.get('has_commented', False):
+            context['has_commented'] = self.request.session.get('has_commented')
+            context['is_review_exist'] = True
+
         return context
 
+
+    # Добавление и сохранение информации на сервер осуществляется через POST запрос.
     def post(self, request, *args, **kwargs):
-        current_product_id = self.request.session['current_product']
-        reviewed_products = self.request.session.get('reviewed_products', [])
+        has_commented = self.request.session.get('has_commented', [])  # запрос о наличии коммента в сессии
+        form = ReviewForm(self.request.POST) # считываем данные формы
 
-        if 'text' in request.POST and current_product_id and current_product_id not in reviewed_products:
+        pk = self.kwargs.get(self.pk_url_kwarg, None)
+        current_product = Product.objects.get(id=pk)
+
+        if form.is_valid() and pk not in has_commented:
             text_review = request.POST['text']
-            current_product = Product.objects.get(id=current_product_id)
             Review.objects.create(text=text_review, product=current_product)
+            has_commented.append(pk)
+            self.request.session['has_commented'] = has_commented
 
-            reviewed_products.append(current_product_id)
-            self.request.session['reviewed_products'] = reviewed_products
-        return redirect(self.get_success_url())
+            return HttpResponseRedirect(reverse('product_detail', kwargs={'pk': pk}))
+
+        return HttpResponseRedirect(reverse('product_detail', kwargs={'pk': pk}))
+
