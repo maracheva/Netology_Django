@@ -14,3 +14,7 @@ class AjaxInputWidget(TextInput):
         context = super().get_context(name, value, attrs)
         context['widget']['url'] = self.url
         return context
+
+
+class Calendar(TextInput):
+    template_name = 'widget/widget_calendar.html'

@@ -17,5 +17,10 @@ class TicketPageView(FormMixin, TemplateView):
 
 def cities_lookup(request):
     """Ajax request предлагающий города для автоподстановки, возвращает JSON"""
-    results = []
+    # value = cache.get('key')
+    # cache.set('key', value)
+
+    results = cache.get_or_set('key', [value.name for value in City.objects.all()])
     return JsonResponse(results, safe=False)
+
+

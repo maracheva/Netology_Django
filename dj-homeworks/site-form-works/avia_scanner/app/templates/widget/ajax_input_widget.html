@@ -1,4 +1,5 @@
-<input type="text" id="id_{{ widget.name }}" name="{{ widget.name }}" {% include "django/forms/widgets/attrs.html" %} />
+<input type="text" id="id_{{ widget.name }}" name="{{ widget.name }}"
+       {% include "django/forms/widgets/attrs.html" %} />
 <script>
     $("#id_{{ widget.name }}").autocomplete({
         source: "{{ widget.url }}",
