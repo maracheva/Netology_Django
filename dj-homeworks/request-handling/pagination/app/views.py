@@ -44,17 +44,10 @@ def bus_stations(request):
     return render_to_response('index.html', context={
         'bus_stations': post.object_list, # список элементов объекта на странице
         'current_page': page, # текущая страница
-        'prev_page_url': (reverse(bus_stations) + '?' + urlencode(
-            {'page': post.previous_page_number()})) if post.has_previous() else False,
-        'next_page_url': (reverse(bus_stations) + '?' + urlencode(
-                {'page': post.next_page_number()})) if post.has_next() else False,
-
-        # !!!!!!!!! Максим, не могу понять, почему соединение путей через join() неправильно
-        # (join() takes exactly one argument (2 given)).
-        # 'prev_page_url': ('?'.join(reverse(bus_stations), urlencode(
-        #     {'page': post.previous_page_number()}))) if post.has_previous() else False,
-        # 'next_page_url': ('?'.join(reverse(bus_stations), urlencode(
-        # {'page': post.next_page_number()}))) if post.has_next() else False,
+        'prev_page_url': ('?'.join([reverse(bus_stations), urlencode(
+            {'page': post.previous_page_number()})])) if post.has_previous() else False,
+        'next_page_url': ('?'.join([reverse(bus_stations), urlencode(
+        {'page': post.next_page_number()})])) if post.has_next() else False,
 
     })
 

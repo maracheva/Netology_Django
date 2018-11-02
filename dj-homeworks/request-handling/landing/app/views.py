@@ -50,7 +50,17 @@ def stats(request):
     # проверяйте GET параметр marker который может принимать значения test и original
     # Для вывода результат передайте в следующем формате:
 
+    try:
+        counter_test = counter_click["test"] / counter_show["test"]
+    except ZeroDivisionError:
+        counter_test = 0.0
+
+    try:
+        counter_orign = counter_click["original"] / counter_show["original"]
+    except ZeroDivisionError:
+        counter_orign = 0.0
+
     return render_to_response('stats.html', context={
-        'test_conversion': counter_click['test'] / counter_show['test'],
-        'original_conversion': counter_click['original'] / counter_show['original'],
+        'test_conversion': counter_test,
+        'original_conversion': counter_orign,
     })

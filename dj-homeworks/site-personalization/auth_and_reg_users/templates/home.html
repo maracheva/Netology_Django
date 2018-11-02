@@ -6,18 +6,20 @@
 {% block content %}
     <div class="container">
         <div class="header"></div>
-        {% if request user.is_authenticcated %}
-            Привет, {{username}}!<br>
-
-            <a href="/signup">Зарегистрировать нового пользователя</a><br>
-            <a href="/login">Авторизоваться под другим пользователем</a><br>
-            <a href="/logout">Выйти</a>
+        <!--{% if context.user %}-->
+            {% if user.is_authenticated %}
+                <p>Привет, {{ user.username }}!</p>
+                <a href="/signup">Зарегистрировать нового пользователя</a><br>
+                <a href="/login">Авторизоваться под другим пользователем</a><br>
+                <a href="/logout">Выйти</a>
+            <!--{% endif %}-->
 
         {% else %}
-            Привет, <b>гость</b>.<br>
-            Пожалуйста, <a href="/signup">зарегистрируйся</a> или <a href="/login">авторизуйся</a>!
+            <p>Привет, <strong>гость</strong></p>.
+            <br> Пожалуйста, <a href="/signup">зарегистрируйся</a> или <a href="/login">авторизуйся</a>!
+
+
 
         {% endif %}
-
     </div>
 {% endblock %}

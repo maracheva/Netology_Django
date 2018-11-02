@@ -18,17 +18,18 @@ class FileList(TemplateView):
             # дата создания файла (из стандартного представления времени)
             data_file = datetime.fromtimestamp(int(path_to_file.st_ctime)).date()
             print(data_file)
-            # date = datetime.date().now()
-            date = datetime(2018, 1, 1).date()
 
-            if data_file == date or date == None:
+            # date = datetime(2018, 1, 1).date()
+            # date = datetime.now().date()
+
+            if date == None or data_file <= date:
                 file_list.append(
                     {'name': file,
                      'ctime': datetime.fromtimestamp(int(path_to_file.st_ctime)).date(), # последний раз, когда были изменены атрибуты файла (разрешения, имя и т.д.)
-                    'mtime': datetime.fromtimestamp(int(path_to_file.st_mtime)).date() #  последний раз, когда было изменено содержание файла
+                     'mtime': datetime.fromtimestamp(int(path_to_file.st_mtime)).date() #  последний раз, когда было изменено содержание файла
                      })
 
-        return { 'files':  file_list,
+        return {'files':  file_list,
                 'date': date # Этот параметр необязательный
         }
 
@@ -38,6 +39,5 @@ def file_content(request, name):
     with open(os.path.join(FILES_PATH, name), encoding='utf-8') as file:
         data = file.read()
 
-    # return render(request,'file_content.html',context={'file_name': name, 'file_content': data})
     return render_to_response('file_content.html', context={'file_name': name, 'file_content': data})
 

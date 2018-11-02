@@ -8,19 +8,16 @@ class DatetimeConverter:
     regex = '[0-9]{4}\-[0-9]{1,2}\-[0-9]{1,2}'
 
     def to_python(self, value):
-        # result = datetime(value.year, value.month, value.day).date()
-        result = datetime.strptime(value, "%Y-%m-%d").date()
-        return result if result is not None else ''
+        date = datetime(value, "%Y-%m-%d").date()
+        return date if date is not None else ''
 
     def to_url(self, value):
-        return value.date()
-
+        return value
 
 register_converter(DatetimeConverter, 'date_conver')
 
-urlpatterns = [# Определите схему урлов с привязкой к отображениям .views.FileList и .views.file_content
-    path('', FileList.as_view(), name='file_list'),  # отображение списка файлов
+urlpatterns = [
+    path('', FileList.as_view(), name='file_list'),
     path('<date_conver:date>', FileList.as_view(), name='file_list'),
-    # отображение списка файлов с фильтрацией по дате /2018-01-01/
-    path('file/<str:name>', file_content, name='file_content'),  # отображение отдельных файлов /file_name.txt
+    path('file/<str:name>', file_content, name='file_content'),
 ]
