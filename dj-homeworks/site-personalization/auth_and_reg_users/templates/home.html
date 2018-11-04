@@ -6,20 +6,29 @@
 {% block content %}
     <div class="container">
         <div class="header"></div>
-        <!--{% if context.user %}-->
+
             {% if user.is_authenticated %}
                 <p>Привет, {{ user.username }}!</p>
-                <a href="/signup">Зарегистрировать нового пользователя</a><br>
-                <a href="/login">Авторизоваться под другим пользователем</a><br>
-                <a href="/logout">Выйти</a>
-            <!--{% endif %}-->
+                <p><form method="post" action="{% url 'signup' %}">
+                    {% csrf_token %}
+                    <button type="submit">Зарегистрировать нового пользователя</button>
+                <!--<a href="/signup">Зарегистрировать нового пользователя</a>-->
+                </form></p>
+                <p><form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <button type="submit">Авторизоваться под другим пользователем</button>
+                <!--<a href="/login">Авторизоваться под другим пользователем</a>-->
+                </form></p>
+                <p><form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">Выйти</button>
+                <!--<a href="/logout">Выйти</a>-->
+                </form></p>
 
-        {% else %}
-            <p>Привет, <strong>гость</strong></p>.
-            <br> Пожалуйста, <a href="/signup">зарегистрируйся</a> или <a href="/login">авторизуйся</a>!
+            {% else %}
+                <p>Привет, <strong>гость</strong></p>.
+                <p>Пожалуйста, <a href="/signup">зарегистрируйся</a> или <a href="/login">авторизуйся</a>!</p>
+            {% endif %}
 
-
-
-        {% endif %}
     </div>
 {% endblock %}

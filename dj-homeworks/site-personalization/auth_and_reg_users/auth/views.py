@@ -1,43 +1,32 @@
 from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm, RegistrationForm
-# from django.contrib.auth.forms.UserCreationForm
-
-
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
-# @login_required(login_url='/accounts/login/')
+from django.http import HttpResponse
+
+
+@login_required(login_url='/accounts/login/')
 def home(request):
-    # username = request.POST['username']
-    # password = request.POST['password']
-    # user = authenticate(request, username=username, password=password)
-
-    # user = request.user
-    # context = {}
-    # if user is not None:
-    #     # Redirect to a success page.
-    #     if user.is_authenticated:
-    #         context['user'] = user
-    #     else:
-    #         context['user'] = False
-    # return render(request, 'home.html', {'context': context})
-    #
-    # # if user is not None:
-    # #     login(request, user)
-    # #     # Redirect to a success page.
-    # #     ...
-    # # # else:
-    # #     # Return an 'invalid login' error message.
-    # #
     return render(request, 'home.html')
 
 
-def signup(request):
-    return render(
-        request,
-        'signup.html'
-    )
+# должна открыться страница с формой для регистрации с тремя полями (логин, пароль и подтверждение пароля)
+def user_signup(request):
+    if request.method == 'POST':
+        user_form = RegistrationForm(request.POST)
+        # проверка на валидацию формы
+        if user_form.is_valid():
+            # перейти на страницу успешной регистрации
+            return render(request, 'accounts/signup_finish.html', {'user_form': user_form})
+            # return HttpResponse('Регистрация прошла успешно!')
+    else:
+        user_form = RegistrationForm()
+    return render(request, 'accounts/signup.html', {'user_form': user_form})
 
-def login(request):
+
+# должна открыться страница с формой для авторизации с двумя полями (логин и пароль)
+def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -46,17 +35,16 @@ def login(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    # return render('Authenticated successfully')
                     return home(request)
                 else:
-                    return render(request, 'account/login.html', {'form': form, 'error': 'Аккаунт неактивен'})
+                    return render(request, 'accounts/login.html', {'form': form, 'error': 'Аккаунт неактивен'})
             else:
-                return render(request, 'account/login.html', {'form': form, 'error': 'Не верный логин или пароль!'})
+                return render(request, 'accounts/login.html', {'form': form, 'error': 'Не верный логин или пароль!'})
     else:
         form = LoginForm()
-    return render(request, 'account/login.html', {'form': form})
+    return render(request, 'accounts/login.html', {'form': form})
 
 
-def logout(request):
+def user_logout(request):
     logout(request)
-    return render(request, 'account/logout.html')
+    return render(request, 'accounts/logout.html')

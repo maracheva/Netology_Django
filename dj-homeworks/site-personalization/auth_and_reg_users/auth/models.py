@@ -1,4 +1,10 @@
-from django.contrib.auth.models import AbstractUser
+# from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 
-class User(AbstractUser):
-    pass
+# создание пользователя
+user = User.objects.create_user('username', 'user@domain.name', 'password')
+
+# class User(AbstractUser):
+#     pass
+
+
