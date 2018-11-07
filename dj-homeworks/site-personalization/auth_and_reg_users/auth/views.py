@@ -6,7 +6,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 
-@login_required(login_url='/accounts/login/')
 def home(request):
     return render(request, 'home.html')
 
@@ -26,6 +25,7 @@ def user_signup(request):
 
 
 # должна открыться страница с формой для авторизации с двумя полями (логин и пароль)
+# @login_required(login_url='/accounts/login/')
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
