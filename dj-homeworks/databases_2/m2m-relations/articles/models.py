@@ -8,7 +8,7 @@ class Scope(models.Model):
         verbose_name_plural = 'Разделы'
 
 
-    def str(self):
+    def __str__(self):
         return self.topic
 
     # задаем уникальность имени

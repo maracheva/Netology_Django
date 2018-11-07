@@ -17,10 +17,7 @@ class FileList(TemplateView):
             path_to_file = os.stat(os.path.join(FILES_PATH, file))
             # дата создания файла (из стандартного представления времени)
             data_file = datetime.fromtimestamp(int(path_to_file.st_ctime)).date()
-            print(data_file)
-
-            # date = datetime(2018, 1, 1).date()
-            # date = datetime.now().date()
+            # print(data_file)
 
             if date == None or data_file <= date:
                 file_list.append(
