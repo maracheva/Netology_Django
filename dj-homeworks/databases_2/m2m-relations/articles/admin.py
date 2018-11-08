@@ -31,16 +31,12 @@ class ArticleAdmin(admin.ModelAdmin):
     list_filter = ['scopes'] # фильтр в админке по разделам
 
     ordering = ['title', 'published_at']  # сортируем в алфавитном порядке
-
     inlines = [ArticleScopeShipInline]
-
-    pass
-
 
 
 @admin.register(Scope)
 class ScopeAdmin(admin.ModelAdmin):
     ordering = ['topic']  # сортируем в алфавитном порядке
 
-    pass
+
 

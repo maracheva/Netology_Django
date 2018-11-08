@@ -7,12 +7,7 @@ class Scope(models.Model):
         verbose_name = 'Раздел'
         verbose_name_plural = 'Разделы'
 
-
     def __str__(self):
-        return self.topic
-
-    # задаем уникальность имени
-    def __unicode__(self):  #
         return self.topic
 
 
@@ -39,9 +34,13 @@ class Article(models.Model):
 
     show_tags.short_description = 'Тематики статьи'
 
+    # @property
+    # def sorted_tags(self):
+    #     return self.scopes.order_by('scopeship__is_main')
+
 
 class ArticleScopeShip(models.Model):
-    scope = models.ForeignKey(Scope, on_delete=models.CASCADE)
+    scope = models.ForeignKey(Scope, on_delete=models.CASCADE, related_name='scopeship')
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     is_main = models.BooleanField(verbose_name='Основной')
 
