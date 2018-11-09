@@ -15,17 +15,18 @@ class CalcView(TemplateView):
         form = CalcForm(self.request.GET)
 
         if form.is_valid():
-            cost = int(self.request.GET['initial_fee'])
-            rate = int(self.request.GET['rate'])
-            months_count = int(self.request.GET['months_count'])
+            cost = int(self.request.GET['initial_fee']) # сумма кредита
+            rate = int(self.request.GET['rate']) # процентная ставка
+            months_count = int(self.request.GET['months_count']) # срок кредита
 
-            # Х = (стоимость + стоимость * процентную ставку) / срок в месяцах.
-            total_cost = round((cost + cost * rate) / months_count)
-            result = round(total_cost / 12)
+            # Х = (стоимость + стоимость / процентную ставку)
+            common_result = round(cost * (1 + 1/rate))
+            # выплата в каждом месяце
+            result = round(common_result / months_count)
 
             context = {
                 'form': form,
-                'common_result': total_cost,
+                'common_result': common_result,
                 'result': result
             }
 
