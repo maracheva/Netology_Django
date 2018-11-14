@@ -29,7 +29,6 @@ class Article(models.Model):
 
     # выведем список тегов в list_display admin.py
     def show_tags(self):
-
         return ', '.join([tag.topic for tag in self.scopes.all()[:3]])
 
     show_tags.short_description = 'Тематики статьи'
