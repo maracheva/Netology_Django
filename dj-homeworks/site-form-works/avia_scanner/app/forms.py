@@ -12,24 +12,16 @@ class SearchTicket(forms.Form):
     # форма города отправления AjaxInputWidget
     city_from = forms.CharField(label='Город отправления', label_suffix=':',
                                 widget=AjaxInputWidget(url='api/city_ajax', attrs={'class': 'inline right-margin'}))
-    # форма города прибытия
-    # для того чтобы задать сортировку данных на сайте будем использовать forms.ChoiceField с параметром choices
 
     # через генератор списка
-    cities_list = [(id, val.name) for id, val in enumerate(City.objects.all().order_by('name'))]
+    # cities_list = [(id, val.name) for id, val in enumerate(City.objects.all().order_by('name'))]
+    # city_to = forms.ChoiceField(label='Город прибытия', label_suffix=':', widget=forms.Select(), choices=(cities_list),
+    #                              initial='0')
 
-    city_to = forms.ChoiceField(label='Город прибытия', label_suffix=':', widget=forms.Select(), choices=(cities_list),
-                                initial='0')
-
-    #  ТАК НЕ СРАБОТАЛО
-    # city_to = forms.ChoiceField(label='Город прибытия', label_suffix=':', initial='0', widget=forms.Select(), )
-    #
-    # def __init__(self, *args, **kwargs):
-    #     super(SearchTicket, self).__init__(*args, **kwargs)
-    #
-    #
-    #     for val in City.objects.all().order_by('name'):
-    #         self.fields['city_to'].choices.append((val.id + 1, val.name))
+    city_to = forms.ModelChoiceField(queryset=City.objects.all().order_by('name'),
+                                     label='Город прибытия',
+                                     label_suffix=':',
+                                     empty_label='----------')
 
 
     # форма для выбора даты
