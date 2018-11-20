@@ -54,7 +54,7 @@ class ProductView(DetailView):
             has_commented.append(pk)
             self.request.session['has_commented'] = has_commented
 
-            return HttpResponseRedirect(reverse('product_detail', kwargs={'pk': pk}))
+            # return HttpResponseRedirect(reverse('product_detail', kwargs={'pk': pk}))
 
         return HttpResponseRedirect(reverse('product_detail', kwargs={'pk': pk}))
 
