@@ -10,7 +10,8 @@ from .models import City
 
 class SearchTicket(forms.Form):
     # форма города отправления AjaxInputWidget
-    city_from = forms.CharField(label='Город отправления', label_suffix=':',
+    city_from = forms.CharField(label='Город отправления',
+                                label_suffix=':',
                                 widget=AjaxInputWidget(url='api/city_ajax', attrs={'class': 'inline right-margin'}))
 
     # через генератор списка
